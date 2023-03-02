@@ -2,8 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+const ejs = require('ejs');
 
 const app = express();
+app.set('view engine', 'ejs');
 
 const port = 3000;
 
@@ -38,7 +40,7 @@ app.get('/home', (req, res) => {
       res.send("Query Error!");
     }
 
-    res.render('home.ejs', { data: results });
+    res.render('home', { data: results });
   });
 
   connection.end((err) => {
