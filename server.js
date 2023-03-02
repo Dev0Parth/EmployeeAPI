@@ -39,7 +39,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.post('/data', (req, res) => {
+app.post('/submitData', (req, res) => {
   // const { fullName, presentOrLeave, halfLeave, fullLeave, workDone, leaveReason } = req.body;
   const fullName = req.body.fullName;
   const presentOrLeave = req.body.presentOrLeave;
