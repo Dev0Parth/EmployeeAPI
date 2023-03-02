@@ -7,8 +7,7 @@ const app = express();
 
 const port = 3000;
 
-const pool = mysql.createPool({
-  connectionLimit: 10,
+const connection = mysql.createConnection({
   host: '127.0.0.1:3306',
   user: 'root',
   password: '',
@@ -20,13 +19,24 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
-  pool.getConnection((err, connection) => {
+  connection.connect((err) => {
     if (err) {
-      res.send("Database connection error!");
-    } else {
-      res.send("Database connected!");
+      res.send("Database Connection Error!");
+      return;
     }
+
+    res.send("Database Connected!");
   })
+  // res.send("I am live.");
+
+  connection.end((err) => {
+    if (err) {
+      res.send("Connection Closing Error!");
+      return;
+    }
+
+    res.send("Connection Closed!");
+  });
 });
 
 app.post('/data', (req, res) => {
@@ -38,28 +48,38 @@ app.post('/data', (req, res) => {
   const workDone = req.body.workDone;
   const leaveReason = req.body.leaveReason;
 
-  pool.getConnection((err, connection) => {
+  connection.connect((err) => {
     if (err) {
-      console.error('Error acquiring database connection: ', err);
-      res.sendStatus(500);
+      res.send("Database Connection Error!");
       return;
     }
 
-    const sql = `INSERT INTO employee (fullName, presentOrLeave, halfLeave, fullLeave, workDone, leaveReason) VALUES (?, ?, ?, ?, ?, ?)`;
-    const values = [fullName, presentOrLeave, halfLeave, fullLeave, workDone, leaveReason];
+    res.send("Database Connected!");
+  })
 
-    connection.query(sql, values, (err, result) => {
-      connection.release();
+  const sql = `INSERT INTO employee (fullName, presentOrLeave, halfLeave, fullLeave, workDone, leaveReason) VALUES (?, ?, ?, ?, ?, ?)`;
+  const values = [fullName, presentOrLeave, halfLeave, fullLeave, workDone, leaveReason];
 
-      if (err) {
-        console.error('Error inserting data into database:', err);
-        res.send("Data Not Inserted!");
-        return;
-      }
 
-      res.send("Data Inserted!");
-    });
+  connection.query(sql, values, (error, result) => {
+    if (error) {
+      res.send("Query Error!");
+      return;
+    }
+
+    res.send("Success!");
   });
+
+
+  connection.end((err) => {
+    if (err) {
+      res.send("Connection Closing Error!");
+      return;
+    }
+
+    res.send("Connection Closed!");
+  });
+
 });
 
 app.listen(port, () => {
