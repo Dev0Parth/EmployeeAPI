@@ -20,6 +20,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
+  pool.getConnection((err, connection) => {
+    if (err) {
+      res.send("Database connection error!");
+    } else {
+      res.send("Database connected!");
+    }
+  })
   res.send("Hello, I am live");
 });
 
