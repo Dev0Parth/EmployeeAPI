@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Home</title>
+
+</head>
+<body>
+    <h1>Welcome to the Home Page, Admin.</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Full Name</th>
+                <th>Present/Leave</th>
+                <th>Half Leave</th>
+                <th>Full Leave</th>
+                <th>Work Done</th>
+                <th>Leave Reason</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% data.forEach((row) => { %>
+                <tr>
+                    <td><%= row.id %></td>
+                    <td><%= row.fullName %></td>
+                    <td><%= row.presentOrLeave %></td>
+                    <td><%= row.halfLeave %></td>
+                    <td><%= row.fullLeave %></td>
+                    <td><%= row.workDone %></td>
+                    <td><%= row.leaveReason %></td>
+                    <td><%= row.createdAt %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</body>
+</html>

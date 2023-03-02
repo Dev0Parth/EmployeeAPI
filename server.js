@@ -19,15 +19,27 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
+  res.sendFile(__dirname + '/login.html');
+});
+
+app.get('/home', (req, res) => {
+
   connection.connect((err) => {
     if (err) {
-      res.send("Database Connection Error!");
+      res.send("Connection Error!");
       return;
     }
+  });
 
-    res.send("Database Connected!");
-  })
-  // res.send("I am live.");
+  const query = `SELECT * FROM employee`;
+
+  connection.query(query, (err, results) => {
+    if (err) {
+      res.send("Query Error!");
+    }
+
+    res.render('home.ejs', { data: results });
+  });
 
   connection.end((err) => {
     if (err) {
@@ -37,6 +49,43 @@ app.get("/", (req, res) => {
 
     res.send("Connection Closed!");
   });
+
+});
+
+app.post('/login', (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+
+  connection.connect((err) => {
+    if (err) {
+      res.send("Connection Error!");
+      return;
+    }
+  });
+
+  const query = `SELECT * FROM admins WHERE username='${username}' AND password='${password}'`;
+
+  connection.query(query, (err, results) => {
+    if (err) {
+      res.send("Query Error!");
+    }
+    if (results.length > 0) {
+      res.redirect('/home');
+    } else {
+      res.send("Invalid username or password!");
+    }
+  });
+
+  connection.end((err) => {
+    if (err) {
+      res.send("Connection Closing Error!");
+      return;
+    }
+
+    res.send("Connection Closed!");
+  });
+
 });
 
 app.post('/submitData', (req, res) => {
@@ -56,7 +105,7 @@ app.post('/submitData', (req, res) => {
     }
 
     res.send("Database Connected!");
-  })
+  });
 
   const sql = `INSERT INTO employee (fullName, presentOrLeave, halfLeave, fullLeave, workDone, leaveReason, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?)`;
   const values = [fullName, presentOrLeave, halfLeave, fullLeave, workDone, leaveReason, createdAt];
