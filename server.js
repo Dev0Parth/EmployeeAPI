@@ -3,6 +3,7 @@ const cors = require('cors');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
+const session = require('express-session');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -28,11 +29,25 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use(session({
+  secret: 'my_secret_key',
+  resave: false,
+  saveUninitialized: true
+}));
+
+const isLoggedIn = (req, res, next) => {
+  if (req.session.user) {
+    next();
+  } else {
+    res.redirect('/');
+  }
+};
+
 app.get("/", (req, res) => {
   res.sendFile(__dirname + '/login.html');
 });
 
-app.get('/home', (req, res) => {
+app.get('/home', isLoggedIn, (req, res) => {
 
   const query = `SELECT * FROM employee`;
 
@@ -42,7 +57,7 @@ app.get('/home', (req, res) => {
       return;
     }
 
-    res.render('home', { data: results });
+    res.render('home', { data: results, user: req.session.user });
   });
 
 });
@@ -60,6 +75,7 @@ app.post('/login', (req, res) => {
       return;
     }
     if (results.length > 0) {
+      req.session.user = username;
       res.redirect('/home');
     } else {
       res.send("Invalid username or password!");
