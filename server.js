@@ -31,7 +31,7 @@ app.get('/home', (req, res) => {
     }
   });
 
-  const query = `SELECT * FROM employee`;
+  const query = 'SELECT * FROM employee';
 
   connection.query(query, (err, results) => {
     if (err) {
