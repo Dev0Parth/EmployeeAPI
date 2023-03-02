@@ -27,11 +27,16 @@ app.get("/", (req, res) => {
       res.send("Database connected!");
     }
   })
-  res.send("Hello, I am live");
 });
 
 app.post('/data', (req, res) => {
-  const { fullName, presentOrLeave, halfLeave, fullLeave, workDone, leaveReason } = req.body;
+  // const { fullName, presentOrLeave, halfLeave, fullLeave, workDone, leaveReason } = req.body;
+  const fullName = req.body.fullName;
+  const presentOrLeave = req.body.presentOrLeave;
+  const halfLeave = req.body.halfLeave;
+  const fullLeave = req.body.fullLeave;
+  const workDone = req.body.workDone;
+  const leaveReason = req.body.leaveReason;
 
   pool.getConnection((err, connection) => {
     if (err) {
