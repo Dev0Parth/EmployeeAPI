@@ -31,7 +31,7 @@ app.get('/home', (req, res) => {
     }
   });
 
-  const query = 'SELECT * FROM employee';
+  const query = `SELECT * FROM employee`;
 
   connection.query(query, (err, results) => {
     if (err) {
@@ -64,9 +64,10 @@ app.post('/login', (req, res) => {
     }
   });
 
-  const query = `SELECT * FROM admins WHERE username='${username}' AND password='${password}'`;
+  const query = `SELECT * FROM admins WHERE username = ? AND password = ?`;
+  const values = [username, password];
 
-  connection.query(query, (err, results) => {
+  connection.query(query, values, (err, results) => {
     if (err) {
       res.send("Query Error!");
     }
