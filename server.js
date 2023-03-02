@@ -47,6 +47,7 @@ app.post('/data', (req, res) => {
   const fullLeave = req.body.fullLeave;
   const workDone = req.body.workDone;
   const leaveReason = req.body.leaveReason;
+  const createdAt = req.body.createdAt;
 
   connection.connect((err) => {
     if (err) {
@@ -57,8 +58,8 @@ app.post('/data', (req, res) => {
     res.send("Database Connected!");
   })
 
-  const sql = `INSERT INTO employee (fullName, presentOrLeave, halfLeave, fullLeave, workDone, leaveReason) VALUES (?, ?, ?, ?, ?, ?)`;
-  const values = [fullName, presentOrLeave, halfLeave, fullLeave, workDone, leaveReason];
+  const sql = `INSERT INTO employee (fullName, presentOrLeave, halfLeave, fullLeave, workDone, leaveReason, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+  const values = [fullName, presentOrLeave, halfLeave, fullLeave, workDone, leaveReason, createdAt];
 
 
   connection.query(sql, values, (error, result) => {
