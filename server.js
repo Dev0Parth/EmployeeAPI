@@ -85,6 +85,16 @@ app.post('/login', (req, res) => {
 
 });
 
+app.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Failed to destroy session: ', err);
+    } else {
+      res.redirect('/');
+    }
+  });
+});
+
 app.post('/submitData', (req, res) => {
   // const { fullName, presentOrLeave, halfLeave, fullLeave, workDone, leaveReason } = req.body;
   const fullName = req.body.fullName;

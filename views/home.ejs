@@ -1,49 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <style>
-        th {
-            border: 1px solid black;
-        }
+      th {
+        border: 1px solid black;
+        font-weight: 700;
+        text-align: center;
+        padding: 10px 30px;
+      }
+
+      td {
+        padding: 10px 30px;
+        text-align: center;
+        border: 1px solid black;
+      }
+
+      .logOutBtn {
+        text-decoration: none;
+        color: white;
+        font-weight: 500;
+        margin-bottom: 20px;
+        padding: 5px 10px;
+        background-color: red;
+      }
+
+      table {
+        margin-top: 20px;
+      }
     </style>
 
     <title>Home</title>
+  </head>
+  <body>
+    <h1>Welcome to the Home Page, <%= user %>.</h1>
 
-</head>
-<body>
-    <h1>Welcome to the Home Page, <% user %>.</h1>
+    <form action="/logout" method="POST">
+      <input type="hidden" name="_method" value="delete" />
+      <button class="logOutBtn" type="submit">Logout</button>
+    </form>
 
     <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Full Name</th>
-                <th>Present/Leave</th>
-                <th>Half Leave</th>
-                <th>Full Leave</th>
-                <th>Work Done</th>
-                <th>Leave Reason</th>
-                <th>Time</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% data.forEach((row) => { %>
-                <tr>
-                    <td><%= row.id %></td>
-                    <td><%= row.fullName %></td>
-                    <td><%= row.presentOrLeave %></td>
-                    <td><%= row.halfLeave %></td>
-                    <td><%= row.fullLeave %></td>
-                    <td><%= row.workDone %></td>
-                    <td><%= row.leaveReason %></td>
-                    <td><%= row.createdAt %></td>
-                </tr>
-            <% }) %>
-        </tbody>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Full Name</th>
+          <th>Present/Leave</th>
+          <th>Half Leave</th>
+          <th>Full Leave</th>
+          <th>Work Done</th>
+          <th>Leave Reason</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% data.forEach((row) => { %>
+        <tr>
+          <td><%= row.id %></td>
+          <td><%= row.fullName %></td>
+          <td><%= row.presentOrLeave %></td>
+          <td><%= row.halfLeave %></td>
+          <td><%= row.fullLeave %></td>
+          <td><%= row.workDone %></td>
+          <td><%= row.leaveReason %></td>
+          <td><%= row.createdAt %></td>
+        </tr>
+        <% }) %>
+      </tbody>
     </table>
-</body>
+  </body>
 </html>
